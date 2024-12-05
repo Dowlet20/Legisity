@@ -65,7 +65,13 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+			fontFamily: {
+				barlow: ['Barlow', 'sans-serif'],
+				merriweather: ["var(--font-merriweather)"],
+				roboto: ["var(--font-roboto)"],
+				roboto_medium: ["var(--font-roboto-medium)"]
+			}
   	}
   },
   plugins: [require("tailwindcss-animate")],

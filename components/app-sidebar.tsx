@@ -21,7 +21,7 @@ import {
 const items = [
   {
     title: "Baş sahypa",
-    url: "#",
+    url: "/",
     icon: Home,
   },
   {
@@ -80,9 +80,9 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton className="text-[16px] h-[50px] gap-3" tooltip={item.title} asChild>
                     <a href={item.url}>
-                      <item.icon style={{ width: '18px', height: '18px' }} />
+                      <item.icon style={{ width: '20px', height: '20px' }} />
                       <div className="flex">
-                        <span className="inline-block">{item.title}</span>
+                        <span className="inline-block font-roboto_medium">{item.title}</span>
                       </div>
                     </a>
                   </SidebarMenuButton>

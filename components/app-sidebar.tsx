@@ -36,7 +36,7 @@ const items = [
   },
   {
     title: "Kodekslere we Kanunlara ylmy-tejribe düşündirişler",
-    url: "#",
+    url: "/all-cotegory",
     icon: Search,
   },
   {
@@ -78,9 +78,9 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton className="text-[16px] h-[50px] gap-3" tooltip={item.title} asChild>
+                  <SidebarMenuButton className="text-[18px] m-2 h-[50px] gap-3" tooltip={item.title} asChild>
                     <a href={item.url}>
-                      <item.icon style={{ width: '20px', height: '20px' }} />
+                      <item.icon style={{ width: '26px', height: '26px' }} />
                       <div className="flex">
                         <span className="inline-block font-roboto_medium">{item.title}</span>
                       </div>

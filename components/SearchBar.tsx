@@ -35,7 +35,7 @@ const SearchBar: React.FC = () => {
                 onChange={handleChange}
                 onBlur={() => setShowDropdown(false)}
                 onFocus={() => query && setShowDropdown(true)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-gray-400 focus:outline-none"
+                className="w-full p-1 border text-[18px] border-gray-300 rounded-lg focus:ring-1 focus:ring-gray-400 focus:outline-none"
                 placeholder="Gözleg..."
             />
             {showDropdown && suggestions.length > 0 && (

@@ -20,7 +20,7 @@ const PlusMinus = () => {
             >
                 <Minus size={16} className="text-black" />
             </button>
-            <span className="text-[18px] font-semibold">{count}</span>
+            <span className="text-[16px] font-semibold">{count}</span>
             <button 
                 onClick={increment} 
                 className="px-3 py-2 transition duration-200 border-l-[1px]"

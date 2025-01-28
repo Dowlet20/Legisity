@@ -6,8 +6,6 @@ const SearchBar: React.FC = () => {
     const [suggestions, setSuggestions] = useState<string[]>(['apple', 'banana', 'cherry', 'date', 'fig', 'grape']);
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
-    const data: string[] = ['Apple', 'Banana', 'Cherry', 'Date', 'Fig', 'Grape'];
-
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setQuery(value);
@@ -35,7 +33,7 @@ const SearchBar: React.FC = () => {
                 onChange={handleChange}
                 onBlur={() => setShowDropdown(false)}
                 onFocus={() => query && setShowDropdown(true)}
-                className="w-full p-1 border text-[18px] border-gray-300 rounded-lg focus:ring-1 focus:ring-gray-400 focus:outline-none"
+                className="w-full p-[5px] border text-[16px] border-gray-300 rounded-md focus:ring-1 focus:ring-gray-400 focus:outline-none"
                 placeholder="Gözleg..."
             />
             {showDropdown && suggestions.length > 0 && (

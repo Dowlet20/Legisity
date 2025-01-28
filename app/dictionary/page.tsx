@@ -1,11 +1,68 @@
 "use client"
-import * as React from 'react';
+import {useState, useEffect, ChangeEvent} from 'react';
 
 import { Separator } from "@/components/ui/separator"
-import SearchBar from '@/components/SearchBar';
 import { SidebarTrigger } from '@/components/ui/sidebar';
+import axiosInstance, { base_URL } from '@/utils/axiosInstance';
+import { useMyContext } from '@/context/mycontext';
 
 const page = () => {
+  const [query, setQuery] = useState<string>('');
+    const [suggestions, setSuggestions] = useState<string[]>([]);
+    const [showDropdown, setShowDropdown] = useState<boolean>(false);
+    const [data, setData] = useState<string[]>([]);
+    const [word, setWord] = useState<any>({});
+    const {change} = useMyContext();
+    
+
+
+    useEffect(
+      ()=> {
+        const fetchData = async () => {
+          try {
+            const url = !query 
+              ? `${base_URL}/api/get-dictinary` 
+              : `${base_URL}/api/get-dictinary?search=${query}`;
+              
+            const response = await axiosInstance.get(url);
+            setData(response.data);
+            
+          } catch (error:any) {
+            if (error.response) {
+              throw new Error(`HTTP error! status: ${error.response.status}`);
+            } else if (error.request) {
+              throw new Error('No response received from the server');
+            } else {
+              throw new Error(`Error: ${error.message}`);
+            }
+          }
+        };
+        fetchData();
+      }, [query]);
+
+
+    // const data: string[] = ['Apple', 'Banana', 'Cherry', 'Date', 'Fig', 'Grape'];
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setQuery(value);
+        if (value) {
+            // const filteredSuggestions = data.filter(item =>
+            //     item.toLowerCase().includes(value.toLowerCase())
+            // );
+            //setSuggestions(filteredSuggestions);
+            setShowDropdown(true);
+        } else {
+            setShowDropdown(false);
+        }
+    };
+
+    const handleSuggestionClick = (suggestion: any) => {
+        setQuery(change ? suggestion?.title_tm : suggestion?.title_ru);
+        setWord(suggestion);
+        setShowDropdown(false);
+    };
+
   return (
     <div>
       <div className='flex items-center justify-between'>
@@ -21,37 +78,64 @@ const page = () => {
       <div className='flex flex-col xl:flex-row items-start justify-around mt-[75px] mx-[40px]'>
         <div className='flex flex-col w-full lg:w-[28%] gap-4 mb-4'>
           <div className='flex w-ful'>
-            <SearchBar />
-          </div>
-          <div className='flex flex-col'>
-            <p className='font-roboto_medium mb-1'>Türkmençe</p>
-            <div className="border-gray-300 text-[15px] border-[1px] rounded-lg p-2 font-roboto_medium">
-              HARBY JENAÝATLAR
+            <div className="relative w-full">
+              <input
+                  type="text"
+                  value={query || ''}
+                  onChange={handleChange}
+                  //onBlur={() => setShowDropdown(false)}
+                  onFocus={() => query && setShowDropdown(true)}
+                  className="w-full p-1 border text-[16px] border-gray-300 rounded-lg focus:ring-1 focus:ring-gray-400 focus:outline-none"
+                  placeholder="Gözleg..."
+              />
+              {showDropdown && data.length > 0 && (
+                  <div className="absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded shadow-lg z-10">
+                      {data.map((item: any, index) => (
+                          <button
+                              key={index}
+                              onClick={() => handleSuggestionClick(item)}
+                              className="p-2 hover:bg-gray-200 cursor-pointer block w-full"
+                          >
+                              {change ? item?.title_tm : item?.title_ru}
+                          </button>
+                      ))}
+                  </div>
+                )}
             </div>
           </div>
-          <div>
-            <p className='font-roboto_medium mb-1'>
-              Русский
-            </p>
-            <div className="border-gray-300 text-[15px] border-[1px] rounded-lg p-2 font-roboto_medium">
-             ВОЕННЫЕ ПРЕСТУПЛЕНИЯ
-            </div>
-          </div>
+          {Object.keys(word).length !== 0 && (
+            <>
+              <div className='flex flex-col'>
+                <p className='font-roboto_medium mb-1'>Türkmençe</p>
+                <div className="border-gray-300 text-[15px] border-[1px] rounded-lg p-2 font-roboto_medium">
+                  {'' || word?.title_tm}
+                </div>
+              </div>
+              <div>
+                <p className='font-roboto_medium mb-1'>
+                  Русский
+                </p>
+                <div className="border-gray-300 text-[15px] border-[1px] rounded-lg p-2 font-roboto_medium">
+                  {'' || word?.title_ru}
+                </div>
+              </div>
+            </>
+          )}
         </div>
-        <div className='flex flex-col lg:w-[28%]'>
+        <div className='flex flex-col lg:w-[28%]  max-xl:mt-[20px]'>
             <p className='font-semibold mb-2'>
-              HARBY JENAÝATLAR
+              {'' || word?.title_tm}
             </p>
-            <p className="text-justify">
-              (halkara jenaýat) - uruş kanunlarynyň ýa-da däpleriniň şahsy jenaýat jogapkärçiligine geçirýän bozulmalary. 1998-nji 17-nji iýulyndaky Halkara jenaýat kazyýetiniň Rim statuty (8-nji madda) harby jenaýatlaryň giň kesgitlemesini özünde saklaýar, onda halkara şertnamalaryndan we halkara adat hukugyndan gelip çykýan 50 jenaýatyň sanawy saklanýar. Rim statutyna laýyklykda, harby jenaýatlara mysal üçin, Ženewa konwensiýalarynyň ýa-da halkara ýaragly dawalarda ulanylýan kanunlaryň ýa-da däpleriň düýpli bozulmagy, ýagny bilkastlaýyn adam öldürmek, gynamalar we birehim çemeleşmek, adamlary girew almak, harby däl ilata bilkastlaýyn çozmak, edil şonuň ýaly hem goragsyz we harby nyşana bolmadyk şäherleri, obalary ýa-da jaýlary bombalamak, boýyn egýän kombatantlary öldürmek ýa-da ýaralamak we ş.m degişlidir.
+            <p className="text-justify mt-[5px]">
+              {'' || word?.description_tm}
             </p>
         </div>
-        <div className='flex flex-col lg:w-[28%]'>
+        <div className='flex flex-col lg:w-[28%] max-xl:mt-[30px]'>
           <p className="font-semibold mb-2">
-            ВОЕННЫЕ ПРЕСТУПЛЕНИЯ
+            {'' || word?.title_ru}
           </p>
-          <p className ="text-justify">
-          (международное преступление) - Нарушения законов или обычаев войны, которые делают отдельных лиц преступниками. Римский статут Международного уголовного суда от 17 июля 1998 г. (статья 8) содержит широкое определение военных преступлений, включающее 50 преступлений, вытекающих из международных договоров и обычного международного права. Согласно Римскому статуту, преступления включают, например, серьезные нарушения Женевских конвенций или законов или конвенций, применимых к международным вооруженным конфликтам, такие как умышленное убийство, пытки и бесчеловечное обращение, захват заложников, умышленное причинение вреда некомбатантам и т. д. . включает бомбардировку незащищенных и невоенных объектов, городов, деревень или домов, убийство или ранение сдающихся комбатантов и т. д.
+          <p className ="text-justify mt-[5px]">
+            {'' || word?.description_ru}
           </p>
         </div>
       </div>

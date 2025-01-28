@@ -9,6 +9,7 @@ export default {
   ],
   theme: {
   	extend: {
+			scrollbar: { hide: {  '&::-webkit-scrollbar': { display: 'none', }, '-ms-overflow-style': 'none', 'scrollbar-width': 'none',}, },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -66,12 +67,43 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
-			fontFamily: {
-				barlow: ['Barlow', 'sans-serif'],
-				merriweather: ["var(--font-merriweather)"],
-				roboto: ["var(--font-roboto)"],
-				roboto_medium: ["var(--font-roboto-medium)"]
-			}
+  		fontFamily: {
+  			barlow: [
+  				'Barlow',
+  				'sans-serif'
+  			],
+  			merriweather: [
+  				'var(--font-merriweather)'
+  			],
+  			roboto: [
+  				'var(--font-roboto)'
+  			],
+  			roboto_medium: [
+  				'var(--font-roboto-medium)'
+  			]
+  		},
+  		keyframes: {
+  			'accordion-down': {
+  				from: {
+  					height: '0'
+  				},
+  				to: {
+  					height: 'var(--radix-accordion-content-height)'
+  				}
+  			},
+  			'accordion-up': {
+  				from: {
+  					height: 'var(--radix-accordion-content-height)'
+  				},
+  				to: {
+  					height: '0'
+  				}
+  			}
+  		},
+  		animation: {
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
+  		}
   	}
   },
   plugins: [require("tailwindcss-animate")],

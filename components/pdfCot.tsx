@@ -1,19 +1,34 @@
 "use client"
 import { base_URL } from '@/utils/axiosInstance';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Document, Page } from 'react-pdf';
 
 function PdfCot( {bookUrl}: {bookUrl:string} ) {
   const [numPages, setNumPages] = useState<number>();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const originalWidth =820;
-  const scale = 1.2 * (window.innerWidth/originalWidth)
+  const [windowWidth, setWindowWidth] = useState<number>(0); 
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+
+      
+      const handleResize = () => setWindowWidth(window.innerWidth);
+
+      window.addEventListener("resize", handleResize);
+
+      
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+  const scale = 1.2 * (windowWidth/originalWidth)
   const [zoom, setZoom] = useState<number>(scale);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
   }
-  console.log(`/pdf/${bookUrl}.pdf`);
+  
 
   return (
     <div className='flex flex-col'>

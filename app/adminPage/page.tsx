@@ -2,13 +2,12 @@
 import axios from 'axios';
 import axiosInstance from '../../utils/axiosInstance';
 import {useState, useEffect,} from 'react'
-import Link from 'next/link';
 import { useMyContext } from '@/context/mycontext';
 import {useRouter} from 'next/navigation';
 
 const AdminPage = () => {
 
-  const { isAuthenticated, logout } = useMyContext();
+  const {isAuthenticated} = useMyContext();
   const router = useRouter();
 
   
@@ -31,7 +30,9 @@ const AdminPage = () => {
       "information":false,
       "kodeksDelete":false,
       "namaDelete":false,
-      "permanDelete":false
+      "permanDelete":false,
+      "dictionaryDelete":false,
+      "informationDelete": false
     });
 
   const [error, setError] = useState('');
@@ -75,13 +76,48 @@ const AdminPage = () => {
   const [kodeksler, setKodeksler] = useState([]);
   const [selectedNama, setSelectedNama] = useState(0);
   const [namalar, setNamalar] = useState([]);
+  const [dictionaries, setDictionaries] = useState([]);
+  const [informations, setInformations] = useState([]);
   const [permanlar, setPermanlar] = useState([]);
   const [selectedPerman, setSelectedPerman] = useState(0);
   const [file, setFile] = useState<File | null>(null);
   const [file_rus, setFile_rus] = useState<File | null>(null);
   const [toggle, setToggle] = useState<string>("false");
+  const [selectedDictionary, setSelectedDictionary] = useState(0);
+  const [selectedInfo, setSelectedInfo] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+
+  useEffect(()=>{
+    const fetchDictionary = async () => {
+      const url = '/api/get-dictinary/';
+      try {
+        const response = await axiosInstance.get(url);
+        setDictionaries(response.data);
+        } 
+        catch (err : any) {
+          setError(`Error: ${err.message}`);
+        }
+      }
+        fetchDictionary();
+      },[response["dictionary"], response["dictionaryDelete"]]);
+
+
+  useEffect(()=>{
+    const fetchInformation = async () => {
+      const url = '/api/get-information/';
+      try {
+        const response = await axiosInstance.get(url);
+        setInformations(response.data);
+        } 
+        catch (err : any) {
+          setError(`Error: ${err.message}`);
+        }
+      }
+        fetchInformation();
+      },[response["information"], response["informationDelete"]]);
+
 
   const handleFileChange = (event:any) => {
     if (event.target.files && event.target.files.length > 0) {  
@@ -184,7 +220,6 @@ const AdminPage = () => {
             setErrorMessage("Failed to upload the file.");
         }
     } catch (error) {
-        // Handle specific error cases
         if (axios.isAxiosError(error)) {
           if (error.response) {
             setErrorMessage(`Error: ${error.response.data.message || 'Upload failed.'}`);
@@ -214,7 +249,7 @@ const AdminPage = () => {
           }
         }   
 
-const permanPost = async (e: React.FormEvent<HTMLFormElement>) => {
+  const permanPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const url = '/api/create-perman/';
     const data = perman;
@@ -385,6 +420,16 @@ const permanPost = async (e: React.FormEvent<HTMLFormElement>) => {
             "kodeks_id": parseInt(value, 10) 
         })); 
         };
+
+    const handleSelectDictionary = (event : any) => {
+      const value = event.target.value;
+      setSelectedDictionary(value);
+      };
+
+      const handleSelectInformation = (event : any) => {
+        const value = event.target.value;
+        setSelectedInfo(value);
+        };
       
       
     const handleSelectCourse = (event:any) => {
@@ -405,32 +450,33 @@ const permanPost = async (e: React.FormEvent<HTMLFormElement>) => {
 
     const handleDeleteWeek = async (itemId : number) => {
         try {
-            const userConfirmed = window.confirm('Siz bellän elementiňizi pozmak isleýäňizmi ?');
-              if (itemId) {
-                    if (userConfirmed) {
-                          const response = await axiosInstance.delete(`/api/delete-kodeks/${itemId}/`);
-          
-                          setResponse(prevResponse => ({
-                                ...prevResponse,
-                                kodeksDelete: true
-                            }));
-            
-                            setTimeout(() => {
-                                  setResponse(prevResponse => ({
-                                        ...prevResponse,
-                                        kodeksDelete: false
-                                    }));
-                                    setError('');
-                                }, 3000);
-                                // window.location.reload()
-                            } else {
-                                  console.log('Cancelled');
-                              }
-                          }
-                      } catch (error) {
-                            console.error('Error deleting item:', error);
-                        }
-                    };
+
+          const userConfirmed = window.confirm('Siz bellän elementiňizi pozmak isleýäňizmi ?');
+
+            if (itemId) {
+              if (userConfirmed) {
+                const response = await axiosInstance.delete(`/api/delete-kodeks/${itemId}/`);
+
+                setResponse(prevResponse => ({
+                  ...prevResponse,
+                  kodeksDelete: true
+                }));
+  
+                  setTimeout(() => {
+                    setResponse(prevResponse => ({
+                          ...prevResponse,
+                          kodeksDelete: false
+                      }));
+                      setError('');
+                  }, 2000);
+                  } else {
+                      console.log('Cancelled');
+                    }
+                }
+            } catch (error) {
+                  console.error('Error deleting item:', error);
+              }
+        };
 
 
   const handleDeleteCourse = async (itemId:number) => {
@@ -450,8 +496,7 @@ const permanPost = async (e: React.FormEvent<HTMLFormElement>) => {
                           "namaDelete":false
                         }));
                         setError('');
-                      }, 3000);
-                      // window.location.reload()
+                      }, 2000);
                     } else {
                         console.log('Cancelled');
                       }
@@ -478,8 +523,7 @@ const permanPost = async (e: React.FormEvent<HTMLFormElement>) => {
                             "permanDelete":false
                           }));
                           setError('');
-                        }, 3000);
-                        // window.location.reload()
+                        }, 2000);
                       } else {
                           console.log('Cancelled');
                         }
@@ -489,6 +533,70 @@ const permanPost = async (e: React.FormEvent<HTMLFormElement>) => {
                       }
                     };
       
+      const handleDeleteDictionary = async (itemId : number) => {
+        try {
+
+          const userConfirmed = window.confirm('Siz bellän elementiňizi pozmak isleýäňizmi ?');
+
+            if (itemId) {
+              if (userConfirmed) {
+                const response = await axiosInstance.delete(`/api/delete-dictinary/${itemId}/`);
+
+                setResponse(prevResponse => ({
+                  ...prevResponse,
+                  dictionaryDelete: true
+                }));
+  
+                  setTimeout(() => {
+                    setResponse(prevResponse => ({
+                          ...prevResponse,
+                          dictionaryDelete: false
+                      }));
+                      setError('');
+                  }, 2000);
+                  
+                  } else {
+                      console.log('Cancelled');
+                    }
+                }
+            } catch (error) {
+                  console.error('Error deleting item:', error);
+              }
+        };
+
+
+        const handleDeleteInformation = async (itemId : number) => {
+          try {
+  
+            const userConfirmed = window.confirm('Siz bellän elementiňizi pozmak isleýäňizmi ?');
+  
+              if (itemId) {
+                if (userConfirmed) {
+                  const response = await axiosInstance.delete(`/api/delete-information/${itemId}/`);
+  
+                  setResponse(prevResponse => ({
+                    ...prevResponse,
+                    informationDelete: true
+                  }));
+    
+                    setTimeout(() => {
+                      setResponse(prevResponse => ({
+                            ...prevResponse,
+                            informationDelete: false
+                        }));
+                        setError('');
+                    }, 2000);
+                    
+                    } else {
+                        console.log('Cancelled');
+                      }
+                  }
+              } catch (error) {
+                    console.error('Error deleting item:', error);
+                }
+          };
+
+
       let msg = "";
 
       if (response.kodeks) {
@@ -502,6 +610,14 @@ const permanPost = async (e: React.FormEvent<HTMLFormElement>) => {
       if (response.perman) {
           msg = "Täze perman goşuldy"
         }
+
+        if (response.dictionary) {
+          msg = "Täze soz goşuldy"
+        }
+
+        if (response.information) {
+          msg = "Täze soz goşuldy"
+        }
           
       if (response.kodeksDelete) {
           msg = "Bellän kodeksiniz pozuldy"
@@ -514,19 +630,27 @@ const permanPost = async (e: React.FormEvent<HTMLFormElement>) => {
       if (response.permanDelete) {
           msg = "Bellän permanynyz pozuldy"
         }
+
+      if (response.dictionaryDelete) {
+        msg = "Bellän soziniz pozuldy"
+      }
+
+      if (response.informationDelete) {
+        msg = "Bellän maglumatynyz pozuldy"
+      }
+
+
               
             
       
     return (
-      <div className='flex flex-col text-gray-600 relative justify-center items-center mt-4'>
-        {/* <button onClick={() => logout()} className='top-0 absolute m-5 text-[25px]'>
-          Sign out
-        </button> */}
+      <div className='flex flex-col text-gray-600 justify-center items-center mt-4'>
         <>
-          {(response["kodeks"] || response["nama"] || response["perman"]) && <div className="text-green-600 text-[24px] font-semibold absolute top-[10px] right-[40px] z-100">
+          {(response["kodeks"] || response["dictionary"] || 
+          response["information"] || response["nama"] || response["perman"]) && <div className="text-green-600 text-[24px] font-semibold sticky top-[10px] right-[40px] z-100">
                   {msg}  
                 </div>}
-                {(response["kodeksDelete"] || response["namaDelete"]|| response["permanDelete"]) && <div className="text-red-600 text-[24px] font-semibold absolute top-[40%] right-[40%] z-100">
+                {(response["kodeksDelete"] || response["informationDelete"] || response["dictionaryDelete"] || response["namaDelete"]|| response["permanDelete"]) && <div className="text-red-600 text-[24px] font-semibold sticky top-[10px] right-[10px] z-100">
                   {msg}  
                 </div>}
                 {error && <div className="text-red-600">
@@ -876,7 +1000,7 @@ const permanPost = async (e: React.FormEvent<HTMLFormElement>) => {
                     </button>
                 </form>
               </div>
-              <div className="w-[300px] mt-[20px] 2xl:w-[400px] mx-auto p-4 border rounded shadow-md">
+              <div className="w-[300px] 2xl:w-[400px] mx-auto p-4 border rounded shadow-md">
                 <h2 className="text-xl font-semibold mb-[10px]">
                   Täze maglumat goş...
                 </h2>
@@ -931,6 +1055,64 @@ const permanPost = async (e: React.FormEvent<HTMLFormElement>) => {
                     </button>
                 </form>
               </div>
+            </div>
+            <div 
+              className='flex items-center gap-5 justify-center w-[90%] 2xl:w-[50%] my-[30px]'
+            > 
+              <select
+                  value={selectedDictionary}             
+                  onChange={handleSelectDictionary}
+                  className="self-center block p-2 border
+                  border-gray-600 rounded-md focus:outline-none
+                    focus:ring-2 w-1/4"
+                >
+                <option value={0}>
+                  Sözi saýlaň
+                </option>
+                {
+                  (Array.isArray(dictionaries) ? dictionaries : [])?.map((item:any, index) => {
+                    return (
+                      <option key={index} value={`${item?.id}`}>
+                        {item["title_tm"]}
+                      </option>
+                    )
+                  })
+                }
+              </select>
+              <select
+                value={selectedInfo}             
+                onChange={handleSelectInformation}
+                className="self-center block p-2 border
+                border-gray-600 rounded-md focus:outline-none
+                  focus:ring-2 w-1/4 ml-[10px]"
+              >
+                  <option value={0}>
+                      Maglumaty saýlaň
+                  </option>
+                {
+                  (Array.isArray(informations) ? informations : [])?.map((information:any, index) => {
+                    return (
+                      <option key={index} value={`${information?.id}`}>
+                        {information.title_tm}
+                      </option>
+                    )
+                  })
+                  }
+                </select>
+            </div>
+            <div className='flex items-center justify-center w-[90%] xl:w-[50%] mb-[50px] gap-10'>
+              <button 
+                onClick={() => handleDeleteDictionary(selectedDictionary)}
+                className='w-1/4 bg-red-500 text-[16px] font-semibold p-2 rounded-md text-gray-100'
+              >
+                Saýlanan sözi poz
+              </button>
+              <button 
+                onClick={() => handleDeleteInformation(selectedInfo)}
+                className='w-1/4 bg-red-500 text-[16px] font-semibold p-2 rounded-md text-gray-100'
+              >
+                Saýlanan maglumaty poz
+              </button>
             </div>
           </>
       </div>

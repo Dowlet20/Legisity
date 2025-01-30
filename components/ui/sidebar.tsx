@@ -70,8 +70,6 @@ const SidebarProvider = React.forwardRef<
     const isMobile = useIsMobile()
     const [openMobile, setOpenMobile] = React.useState(false)
 
-    // This is the internal state of the sidebar.
-    // We use openProp and setOpenProp for control from outside the component.
     const [_open, _setOpen] = React.useState(defaultOpen)
     const open = openProp ?? _open
     const setOpen = React.useCallback(
@@ -108,13 +106,28 @@ const SidebarProvider = React.forwardRef<
         }
       }
 
+      
       window.addEventListener("keydown", handleKeyDown)
       return () => window.removeEventListener("keydown", handleKeyDown)
     }, [toggleSidebar])
+    
+    const [windowWidth, setWindowWidth] = React.useState<number>(0); 
 
-    // We add a state so that we can do data-state="expanded" or "collapsed".
-    // This makes it easier to style the sidebar with Tailwind classes.
-    const state = window.innerWidth > 1300 ? "expanded" : (open ? "collapsed" : "expanded")
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+
+      
+      const handleResize = () => setWindowWidth(window.innerWidth);
+
+      window.addEventListener("resize", handleResize);
+
+      
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
+    const state = windowWidth > 1300 ? "expanded" : (open ? "collapsed" : "expanded")
 
     const contextValue = React.useMemo<SidebarContext>(
       () => ({

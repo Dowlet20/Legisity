@@ -13,29 +13,16 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
+} from "@/components/ui/select";
 
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import SearchBar from "../components/SearchBar"
+} from "@/components/ui/table";
 
 import {
   Accordion,
@@ -48,11 +35,10 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes"
  
 import { SidebarTrigger } from "../components/ui/sidebar";
-import { Separator } from "@radix-ui/react-separator"
-import axiosInstance, { base_URL } from "@/utils/axiosInstance";
+import axiosInstance from "@/utils/axiosInstance";
 import { useMyContext } from "@/context/mycontext"
 import Link from "next/link";
-
+import { base_URL } from "@/utils/axiosInstance";
 
 export default function Home() {
   const [short, setShort] = useState(true);
@@ -68,6 +54,23 @@ export default function Home() {
   const [month, setMonth] = useState("");
   const years = [2017, 2018, 2019, 2020, 2021, 2022];
   const months = ["Ýanwar", "Fewral", "Mart", "Aprel", "Maý", "Iýun", "Iýul", "Awgust","Sentýabr", "Oktýabr", "Noýabr", "Dekabr"];
+
+  const [windowWidth, setWindowWidth] = useState<number>(0); 
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+
+      
+      const handleResize = () => setWindowWidth(window.innerWidth);
+
+      window.addEventListener("resize", handleResize);
+
+      
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
   const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
@@ -151,8 +154,8 @@ export default function Home() {
   };
   return (
     <div className="flex flex-col items-center">
-      <nav className="border-b-[1px] border-gray-300 dark:border-gray-700 flex items-center justify-between pl-2 w-full sticky top-0  z-30 bg-white dark:bg-gray-950 bg-opacity-30 backdrop-blur-md">
-        <SidebarTrigger />
+      <nav className="border-b-[1px] h-[60px] border-gray-300 dark:border-gray-700 flex items-center justify-between pl-2 w-full sticky top-0  z-30 bg-white dark:bg-gray-950 bg-opacity-30 backdrop-blur-md">
+        {windowWidth < 1300 ? (<SidebarTrigger />) : (<div></div>)} 
         <Link href="/">
           {
             theme === "light" || theme === undefined ? (
@@ -179,7 +182,7 @@ export default function Home() {
         </div>
       </nav>
       <Carousel images={countries} />
-      <main className="w-[80%]">
+      <main className="w-[95%]">
         <section className="flex items-center mx-3 mt-[50px] justify-between gap-5 relative">
           <input
             type="text"
@@ -190,18 +193,21 @@ export default function Home() {
             placeholder={`${change ? "Gözleg...": "Поиск..."}`}
           />
           {showDropdown && permanlar?.length > 0 && (
-            <div className="absolute left-0 top-[-45px] right-8  mt-[90px] bg-white border border-gray-300 rounded shadow-lg z-10">
-                {permanlar?.map((item: any, index:any) => (
-                    <button
-                      key={index}
-                      onClick={() => 
-                        handleSuggestionClick(item)
-                      }
-                      className="p-2 hover:bg-gray-200 cursor-pointer block w-full"
-                    >
-                      {change ? item?.title_tm : item?.title_ru}
-                    </button>
-                ))}
+            <div 
+              className="absolute left-0 top-[-45px] right-8  mt-[90px] 
+              bg-white border border-gray-300 rounded shadow-lg z-10"
+            >
+              {permanlar?.map((item: any, index:any) => (
+                  <button
+                    key={index}
+                    onClick={() => 
+                      handleSuggestionClick(item)
+                    }
+                    className="p-2 hover:bg-gray-200 cursor-pointer block w-full"
+                  >
+                    {change ? item?.title_tm : item?.title_ru}
+                  </button>
+              ))}
             </div>
             )}
           <div className="w-full">
@@ -227,7 +233,7 @@ export default function Home() {
           </div>
           <Button variant="outline" 
             onClick={()=>{setShort(toggle => !toggle)}}>
-              {!short ? "инфо" : "Таблица"}
+              {!short ? (change ? "Maglumat" : "Инфо") : ( change ? "Tablissa" : "Таблица")}
           </Button>
         </section>
         <div className="flex items-center pr-3 mt-3 justify-end w-full gap-5">
@@ -297,11 +303,11 @@ export default function Home() {
                 <TableHeader className="text-[16px]">
                   <TableRow>
                     <TableHead className="w-[50px] font-roboto_medium text-gray-800">{change ? "T/B" : "Н"}</TableHead>
-                    <TableHead className="w-[50px] font-roboto_medium text-gray-800">ID</TableHead>
                     <TableHead className="text-center font-roboto_medium text-gray-800">{change ? "Ady" : "Имя"}</TableHead>
                     <TableHead className="w-[50px] font-roboto_medium text-gray-800">{change ? "Aýy" : "Месяц"}</TableHead>
                     <TableHead className="w-[50px] font-roboto_medium text-gray-800">{change ? "Ýyly":"Год"}</TableHead>
                     <TableHead className="w-[90px] font-roboto_medium text-gray-800">{change ? "Belgisi" : "Символ"}</TableHead>
+                    <TableHead className="w-[90px] font-roboto_medium text-gray-800">{change ? "Ýükle" : "Скачать"}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="text-[16px]">
@@ -312,13 +318,12 @@ export default function Home() {
                       </TableCell>
                     </TableRow>
                   ) : (!Array.isArray(permanlar) ? [] : 
-                    permanlar.map((perman:any) => (
+                    permanlar.map((perman:any, index:number) => (
                       <TableRow key={perman.id}>
-                        <TableCell className="font-medium">{perman.id}</TableCell>
-                        <TableCell>{perman.id}</TableCell>
+                        <TableCell className="font-medium">{index+1}</TableCell>
                         <TableCell>
                           <div className="text-justify">
-                            <a href={`/perman/${perman.id}`} className="hover:underline">
+                            <a href={`/perman/${perman.id}`} className="hover:underline flex justify-center">
                               {change ? perman.title_tm : perman.title_ru}
                             </a>
                           </div>
@@ -326,6 +331,19 @@ export default function Home() {
                         <TableCell>{change ? perman.month : perman.month_ru}</TableCell>
                         <TableCell>{perman.year}</TableCell>
                         <TableCell>{perman.number}</TableCell>
+                        <TableCell className="flex justify-center">
+                          <a 
+                            href={`${base_URL}${change ? perman?.pdf : perman?.pdf_rus}`}
+                          >
+                            <Image 
+                              alt="pdf icon"
+                              src={'/pdf.png'}
+                              height={25}
+                              width={25}
+                              className="dark:white"
+                            />
+                          </a>
+                        </TableCell>
                       </TableRow>
                     ))
                   )}

@@ -9,16 +9,13 @@ import { useTheme } from 'next-themes';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
  
 import { SidebarTrigger } from "../../../components/ui/sidebar";
-import { Separator } from "@radix-ui/react-separator"
 import Image from 'next/image';
 
 import { pdfjs } from 'react-pdf';
@@ -34,6 +31,21 @@ const Perman = ({ params }: { params: Promise<{ id: string }> }) => {
   const [perman, setPerman] = useState<any>({});
   const {id} = use(params);
   const {theme} = useTheme();
+  const [windowWidth, setWindowWidth] = useState<number>(0); 
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+
+      
+      const handleResize = () => setWindowWidth(window.innerWidth);
+
+      window.addEventListener("resize", handleResize);
+
+      
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,12 +61,11 @@ const Perman = ({ params }: { params: Promise<{ id: string }> }) => {
   }, []);
 
   useEffect(()=>{}, [theme])
- 
-  console.log(perman?.pdf)
+
   return (
     <div className='flex flex-col items-center'>
       <nav className="border-b-[1px] border-gray-300 dark:border-gray-700 flex items-center justify-between pl-2 w-full mb-6 dark:bg-gray-950 bg-opacity-60 backdrop-blur-md sticky top-0 z-30">
-        <SidebarTrigger />
+        {windowWidth < 1300 ? (<SidebarTrigger />) : (<div></div>)} 
         <Link href="/">
           {
             theme === "light" || theme === undefined ? (

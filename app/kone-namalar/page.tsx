@@ -1,7 +1,5 @@
 "use client"
-"use strict"
-import Carousel from "@/components/Carousel";
-import { countries } from "@/components/Data";
+
 import {ChangeEvent, useEffect, useState} from "react"
 import {ModeToggle} from "@/components/toggleButton"
 import Image from "next/image";
@@ -14,42 +12,21 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
+} from "@/components/ui/select";
 
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import SearchBar from "@/components/SearchBar"
-
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-
-import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes"
  
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import axiosInstance, { base_URL } from "@/utils/axiosInstance";
+import axiosInstance from "@/utils/axiosInstance";
 import { useMyContext } from "@/context/mycontext"
 import Link from "next/link";
 
@@ -66,6 +43,22 @@ export default function Home() {
   const [month, setMonth] = useState("");
   const years = [1999,2000, 2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
   const months = ["Ýanwar", "Fewral", "Mart", "Aprel", "Maý", "Iýun", "Iýul", "Awgust","Sentýabr", "Oktýabr", "Noýabr", "Dekabr"];
+  const [windowWidth, setWindowWidth] = useState<number>(0); 
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+
+      
+      const handleResize = () => setWindowWidth(window.innerWidth);
+
+      window.addEventListener("resize", handleResize);
+
+      
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+  
   const router = useRouter();
 
   useEffect(() => {
@@ -134,7 +127,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center">
       <nav className="border-b-[1px] border-gray-300 dark:border-gray-700 flex items-center justify-between pl-2 w-full sticky top-0  z-30 bg-white dark:bg-gray-950 bg-opacity-30 backdrop-blur-md">
-        <SidebarTrigger />
+      {windowWidth < 1300 ? (<SidebarTrigger />) : (<div></div>)} 
         <Link href="/">
           {
             theme === "light" || theme === undefined ? (
@@ -284,7 +277,9 @@ export default function Home() {
               <TableBody className="text-[16px]">
                 {permanlar.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center">No data available</TableCell>
+                    <TableCell colSpan={6} className="text-center">
+                      Bu bölümde güýjini ýitiren nama ýok.
+                    </TableCell>
                   </TableRow>
                 ) : (!Array.isArray(permanlar) ? [] : 
                   permanlar.map((perman:any) => (

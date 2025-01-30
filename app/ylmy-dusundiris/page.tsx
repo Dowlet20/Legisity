@@ -1,7 +1,7 @@
 "use client"
 "use strict"
 
-import {useState, ChangeEvent} from "react";
+import {useState, useEffect} from "react";
 import {ModeToggle} from "@/components/toggleButton"
 import {
   Select,
@@ -168,6 +168,21 @@ const AllCotegory = () => {
 
   const years = ["2017", "2018", "2019", "2020", "2021", "2022"];
   const months = ["Ýanwar", "Fewral", "Mart", "Aprel", "Maý", "Iýun", "Iýul", "Awgust","Sentýabr", "Oktýabr", "Noýabr", "Dekabr"];
+  const [windowWidth, setWindowWidth] = useState<number>(0); 
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+
+      
+      const handleResize = () => setWindowWidth(window.innerWidth);
+
+      window.addEventListener("resize", handleResize);
+
+      
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   const {change} = useMyContext();
 
@@ -185,7 +200,7 @@ const AllCotegory = () => {
   return (
     <div className="flex flex-col items-center">
       <nav className="border-b-[1px] border-gray-300 dark:border-gray-700 flex items-center justify-between pl-2 w-full">
-        <SidebarTrigger />
+      {windowWidth < 1300 ? (<SidebarTrigger />) : (<div></div>)} 
         <div className="mr-4 my-2">
           <ModeToggle />
         </div>
@@ -315,7 +330,7 @@ const AllCotegory = () => {
                             <TableCell>{perman.id}</TableCell>
                             <TableCell>
                               <div className="text-justify">
-                                <a href={`/for-cotegory/${change ? perman?.pdf?.match(/\/pdf\/(\d+)\.pdf/)?.[1]:perman?.pdf_rus?.match(/\/pdf\/(\d+)\.pdf/)?.[1]}`} className="hover:underline">
+                                <a href={`/ylmy-tejribe/${change ? perman?.pdf?.match(/\/pdf\/(\d+)\.pdf/)?.[1]:perman?.pdf_rus?.match(/\/pdf\/(\d+)\.pdf/)?.[1]}`} className="hover:underline">
                                   {change ? perman.title_tm : perman.title_ru}
                                 </a>
                               </div>

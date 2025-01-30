@@ -64,7 +64,11 @@ body {
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* --sidebar-background: 0 70% 98%; */
+
+    /* --sidebar-background: 191 41% 82.5%; */
+    --sidebar-background: 0 0% 99.6%;
+
 
     --sidebar-foreground: 240 5.3% 26.1%;
 
@@ -130,7 +134,7 @@ body {
 
     --chart-5: 340 75% 55%;
 
-    --sidebar-background: 240 5.9% 10%;
+    --sidebar-background: 240 5.9% 5%;
 
     --sidebar-foreground: 240 4.8% 95.9%;
 
@@ -169,7 +173,7 @@ body {
 @media (max-width: 1180px) and (min-width:768) {
   .carousel {
     display: flex;
-    height: 20vh;
+    height: 28vh;
     width: 100%;
   }
 }
@@ -178,7 +182,7 @@ body {
 @media (max-width: 1280px) and (min-width:1170) {
   .carousel {
     display: flex;
-    height: 47vh;
+    height: 49vh;
     width: 100%;
   }
 }
@@ -187,7 +191,7 @@ body {
 @media (max-width: 767px) {
   .carousel {
     display: flex;
-    height: 14vh;
+    height: 20vh;
     width: 100%;
   }
 } 
@@ -228,7 +232,7 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.08);
   display: flex;
   padding: 40px 30px;
   align-items: flex-end;

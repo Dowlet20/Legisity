@@ -16,15 +16,15 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-const merriweather = localFont({
-  src: [
-    {
-      path: "../public/fonts/Barlow/Barlow-SemiBold.ttf",
-      weight:"400",
-    },
-  ],
-  variable: "--font-merriweather"
-});
+// const merriweather = localFont({
+//   src: [
+//     {
+//       path: "../public/fonts/Barlow/Barlow-SemiBold.ttf",
+//       weight:"400",
+//     },
+//   ],
+//   variable: "--font-merriweather"
+// });
 
 const roboto = localFont({
   src: [

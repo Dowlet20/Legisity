@@ -18,9 +18,25 @@ import {
 } from "@/components/ui/sidebar";
 
 import { useMyContext } from "@/context/mycontext";
+import { useEffect, useState } from "react";
 
 export function AppSidebar() {
   const { change, setChange } = useMyContext();
+  const [windowWidth, setWindowWidth] = useState<number>(0); 
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+
+      
+      const handleResize = () => setWindowWidth(window.innerWidth);
+
+      window.addEventListener("resize", handleResize);
+
+      
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   const items = [
     {
@@ -35,17 +51,17 @@ export function AppSidebar() {
     },
     {
       title: change ? "Kodekslere we Kanunlara ylmy-tejribe düşündirişler" : "Научно-практические комментарии и Кодексам и законам",
-      url: "/all-cotegory",
+      url: "/ylmy-dusundiris",
       icon: Server,
     },
     {
       title: change ? "Hukuk sözlügi" : "Юридический словарь",
-      url: "/dictionary",
+      url: "/sozluk",
       icon: BookA,
     },
     {
       title: "Harby doktrina",
-      url: "/for-cotegory/17",
+      url: "/ylmy-tejribe/17",
       icon: BookOpen,
     },
   ];
@@ -88,7 +104,7 @@ export function AppSidebar() {
                   <SidebarSeparator />
                 </SidebarMenuItem>
               ))}
-              {!open && (window.innerWidth < 1300) && (
+              {!open && (windowWidth < 1300) && (
                 <SidebarMenuItem key={"language"} className="flex mt-[15px]">
                   <SidebarMenuButton
                     className="text-[16px] flex items-center justify-center m-1 h-[45px] gap-3"
@@ -122,7 +138,7 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               )}
-              {(window.innerWidth > 1300) && (
+              {(windowWidth > 1300) && (
                 <SidebarMenuItem key={"language"} className="flex mt-[15px]">
                   <SidebarMenuButton
                     className="text-[16px] flex items-center justify-center m-1 h-[45px] gap-3"

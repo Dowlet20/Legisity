@@ -16,6 +16,17 @@ const Page = () => {
     const { theme } = useTheme();
     const [windowWidth, setWindowWidth] = useState<number | null>(null);
     const [mounted, setMounted] = useState(false);
+    const [inputValue, setInputValue] = useState('');
+
+    const handleInputChange = (inputValue: any) => {
+        setInputValue(inputValue);
+    };
+
+    const handleMenuOpen = () => {
+        setInputValue('');
+    };
+
+
 
     const customStyles = {
         control: (provided: any) => ({
@@ -106,6 +117,9 @@ const Page = () => {
                                     onChange={handleChange}
                                     placeholder="Gözleg... "
                                     styles={customStyles}
+                                    onInputChange={handleInputChange}
+                                    onMenuOpen={handleMenuOpen}
+                                    inputValue={inputValue}
                                 />
                             )}
                         </div>

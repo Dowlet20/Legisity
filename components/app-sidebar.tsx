@@ -95,7 +95,7 @@ export function AppSidebar() {
                     <a href={item.url}>
                       <item.icon style={{ width: "22px", height: "22px" }} />
                       <div className="flex">
-                        <span className="inline-block font-roboto_medium">
+                        <span className="inline-block">
                           {item.title}
                         </span>
                       </div>
@@ -172,6 +172,23 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               )}
+              {/* {!open && (windowWidth < 1300)  && (
+                <SidebarMenuItem className="flex items-center h-[60vh]">
+                    <SidebarMenuButton
+                      className="m-1 h-auto"
+                      asChild
+                    >
+                      <a>
+                        <Image
+                          alt="ron"
+                          width={250}
+                          height={250}
+                          src={"/shewron.png"}
+                        />
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+              )} */}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

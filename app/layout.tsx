@@ -3,8 +3,9 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { SidebarProvider } from "../components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
-import {ThemeProvider} from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/theme-provider"
 import { MyProvider } from "@/context/mycontext";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -16,21 +17,49 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-// const merriweather = localFont({
-//   src: [
-//     {
-//       path: "../public/fonts/Barlow/Barlow-SemiBold.ttf",
-//       weight:"400",
-//     },
-//   ],
-//   variable: "--font-merriweather"
-// });
+const instruction = localFont({
+  src: "./fonts/instruction/Instruction.otf",
+  variable: "--font-instruction",
+  weight: "100 900",
+});
+
+const mono_type = localFont({
+  src: "./fonts/monospace_typewrite/MonospaceTypewriter.woff",
+  variable: "--font-mono_type",
+  weight: "100 900",
+});
+
+const everson_mono = localFont({
+  src: "./fonts/everson_mono_latin/EMLATIN6.ttf",
+  variable: "--font-everson_mono",
+  weight: "100 900",
+});
+
+
+const built_titling = localFont({
+  src: "./fonts/built_titling/built_titling_rg.otf",
+  variable: "--font-built_titling",
+  weight: "100 900",
+});
+
+
+const creato_display = localFont({
+  src: "./fonts/creato_display/CreatoDisplay-Regular.otf",
+  variable: "--font-creato_display",
+  weight: "100 900",
+});
+
+const creato_display_italic = localFont({
+  src: "./fonts/creato_display/CreatoDisplay-RegularItalic.otf",
+  variable: "--font-creato_display_italic",
+  weight: "100 900",
+});
 
 const roboto = localFont({
   src: [
     {
       path: "../public/fonts/Roboto/Roboto-Regular.ttf",
-      weight:"400",
+      weight: "400",
     },
   ],
   variable: "--font-roboto"
@@ -40,7 +69,7 @@ const roboto_medium = localFont({
   src: [
     {
       path: "../public/fonts/Roboto/Roboto-Regular.ttf",
-      weight:"400",
+      weight: "400",
     },
   ],
   variable: "--font-roboto-medium"
@@ -60,19 +89,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${roboto.variable} ${roboto_medium.variable} ${geistSans.variable} ${geistMono.variable} dark:font-roboto antialiased scrollbar-hide`}
+        className={`${roboto.variable} ${roboto_medium.variable} ${geistSans.variable} ${geistMono.variable} ${instruction.variable} ${mono_type.variable} ${everson_mono.variable} ${built_titling.variable} ${creato_display.variable} ${creato_display_italic.variable} font-creato_display antialiased scrollbar-hide`}
       >
         <MyProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
-            >
+          >
             <SidebarProvider>
               <AppSidebar />
               <main className="w-full">
-              {children}
+                {children}
               </main>
             </SidebarProvider>
           </ThemeProvider>

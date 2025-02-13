@@ -6,13 +6,13 @@ import { Document, Page } from 'react-pdf';
 function PdfCot( {bookUrl}: {bookUrl:string} ) {
   const [numPages, setNumPages] = useState<number>();
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [windowWidth,setWindowWidth] =useState(0);
   const originalWidth =820;
-  const [windowWidth, setWindowWidth] = useState<number>(0); 
+  const [scale, setScale] = useState(1.22);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setWindowWidth(window.innerWidth);
-
       
       const handleResize = () => setWindowWidth(window.innerWidth);
 
@@ -22,8 +22,14 @@ function PdfCot( {bookUrl}: {bookUrl:string} ) {
       return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
-  const scale = 1.2 * (windowWidth/originalWidth)
-  const [zoom, setZoom] = useState<number>(scale);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      
+      setScale(1.22 * (windowWidth/originalWidth))
+
+    }
+  }, [windowWidth]);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
@@ -38,7 +44,7 @@ function PdfCot( {bookUrl}: {bookUrl:string} ) {
             <div key={`page_${index + 1}`} className="mb-2" > 
               <Page 
                 pageNumber={index + 1} 
-                scale={zoom}
+                scale={scale}
                 renderTextLayer={false} 
                 renderAnnotationLayer={false} 
               />

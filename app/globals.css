@@ -84,6 +84,7 @@ body {
 
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
 
     --background: 0 0% 3.9%;
@@ -158,6 +159,7 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground mb-[30px];
   }
@@ -194,7 +196,7 @@ body {
     height: 20vh;
     width: 100%;
   }
-} 
+}
 
 .carousel_wrapper {
   position: relative;
@@ -215,6 +217,20 @@ body {
   pointer-events: none;
   transform: scale(0.8);
   transition: 0.5s ease-in-out;
+}
+
+.select-light {
+  background-color: white;
+  color: black;
+}
+
+.select-dark {
+  background-color: black;
+  color: white;
+}
+
+nextjs-portal {
+  display: none;
 }
 
 .carousel_card-active {

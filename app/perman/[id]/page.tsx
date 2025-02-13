@@ -50,7 +50,7 @@ const Perman = ({ params }: { params: Promise<{ id: string }> }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get(`${base_URL}/api/perman/get_one/${id}`);
+        const response = await axiosInstance.get(`/api/perman/get_one/${id}`);
         
         setPerman(response.data);
       } catch (error: any) {
@@ -61,7 +61,7 @@ const Perman = ({ params }: { params: Promise<{ id: string }> }) => {
   }, []);
 
   useEffect(()=>{}, [theme])
-
+  console.log(perman?.pdf)
   return (
     <div className='flex flex-col items-center'>
       <nav className="border-b-[1px] border-gray-300 dark:border-gray-700 flex items-center justify-between pl-2 w-full mb-6 dark:bg-gray-950 bg-opacity-60 backdrop-blur-md sticky top-0 z-30">

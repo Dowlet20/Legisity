@@ -75,8 +75,26 @@ export default {
   			merriweather: [
   				'var(--font-merriweather)'
   			],
+				instruction: [
+  				'var(--font-instruction)'
+  			],
+				mono_type: [
+  				'var(--font-mono_type)'
+  			],
+				everson_mono: [
+  				'var(--font-everson_mono)'
+  			],
   			roboto: [
   				'var(--font-roboto)'
+  			],
+				built_titling: [
+  				'var(--font-built_titling)'
+  			],
+				creato_display: [
+  				'var(--font-creato_display)'
+  			],
+				creato_display_italic: [
+  				'var(--font-creato_display_italic)'
   			],
   			roboto_medium: [
   				'var(--font-roboto-medium)'

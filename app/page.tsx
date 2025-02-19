@@ -77,8 +77,8 @@ export default function Home() {
       const url = `/api/get-permanlar/${selectedNama}?active=false${year !== 0 ? `&year=${year}` : ""}${month ? `&month=${month}` : ""}${search ? `&search=${search}` : ""}`;
       console.log(url);
       try {
-        const response = await axiosInstance.get(url);
-        setPermanlar(response.data);
+        const response = await axiosInstance?.get(url);
+        setPermanlar(response?.data);
       } catch (error: any) {
         console.log(error.message);
       }
@@ -93,9 +93,9 @@ export default function Home() {
     const fetchData = async () => {
       const url = "/api/get-information";
       try {
-        const response = await axiosInstance.get(url);
-        setInformation(response.data);
-        console.log(response.data);
+        const response = await axiosInstance?.get(url);
+        setInformation(response?.data);
+        console.log(response?.data);
       } catch (error: any) {
         console.log(error.message);
       }
@@ -128,8 +128,8 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get(`/api/get-namalar`);
-        setNamalar(response.data);
+        const response = await axiosInstance?.get(`/api/get-namalar`);
+        setNamalar(response?.data);
       } catch (error: any) {
         console.log(error.message);
       }

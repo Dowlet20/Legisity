@@ -65,8 +65,8 @@ export default function Home() {
     const fetchData = async () => {
       const url = `/api/get-permanlar/${selectedNama}?active=true${year !==0 ? `&year=${year}`: ""}${month ? `&month=${month}`:""}${search ? `&search=${search}`:""}`;
       try {
-        const response = await axiosInstance.get(url);
-        setPermanlar(response.data);
+        const response = await axiosInstance?.get(url);
+        setPermanlar(response?.data);
       } catch (error: any) {
         console.log(error.message);
       }
@@ -100,8 +100,8 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get(`/api/get-namalar`);
-        setNamalar(response.data);
+        const response = await axiosInstance?.get(`/api/get-namalar`);
+        setNamalar(response?.data);
       } catch (error: any) {
         console.log(error.message);
       }

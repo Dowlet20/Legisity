@@ -93,8 +93,8 @@ const AdminPage = () => {
     const fetchDictionary = async () => {
       const url = '/api/get-dictinary/';
       try {
-        const response = await axiosInstance.get(url);
-        setDictionaries(response.data);
+        const response = await axiosInstance?.get(url);
+        setDictionaries(response?.data);
         } 
         catch (err : any) {
           setError(`Error: ${err.message}`);
@@ -108,8 +108,8 @@ const AdminPage = () => {
     const fetchInformation = async () => {
       const url = '/api/get-information/';
       try {
-        const response = await axiosInstance.get(url);
-        setInformations(response.data);
+        const response = await axiosInstance?.get(url);
+        setInformations(response?.data);
         } 
         catch (err : any) {
           setError(`Error: ${err.message}`);
@@ -137,7 +137,7 @@ const AdminPage = () => {
         const data = kodeks;
         try {
             if (kodeks.title_tm && kodeks.title_ru) {
-                const response = await axiosInstance.post(url, data);
+                const response = await axiosInstance?.post(url, data);
                 setKodeks({
                   "title_tm":"",
                   "title_ru":""
@@ -167,7 +167,7 @@ const AdminPage = () => {
         const data = nama;
         try {
           if (nama.title_tm && nama.title_tm && nama.kodeks_id) {
-            const response = await axiosInstance.post(url, data);
+            const response = await axiosInstance?.post(url, data);
             setNama((nama:any) => (
               {
                 "title_tm":"",
@@ -205,13 +205,13 @@ const AdminPage = () => {
     formData.append('file_rus', file_rus);
 
     try {
-        const response = await axiosInstance.put(`/api/update-pdf/${id}`, formData, {
+        const response = await axiosInstance?.put(`/api/update-pdf/${id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
 
-        if (response.status === 200) {
+        if (response?.status === 200) {
             setSuccessMessage("File uploaded successfully!");
             console.log("File uploaded successfully!");
             setFile(null); 
@@ -222,7 +222,7 @@ const AdminPage = () => {
     } catch (error) {
         if (axios.isAxiosError(error)) {
           if (error.response) {
-            setErrorMessage(`Error: ${error.response.data.message || 'Upload failed.'}`);
+            setErrorMessage(`Error: ${error.response?.data.message || 'Upload failed.'}`);
           } else if (error.request) {
                 setErrorMessage("No response from the server. Please try again later.");
               } else {
@@ -239,7 +239,7 @@ const AdminPage = () => {
           try {
             if (selectedPerman !== 0) {
               const url = `/api/update-active/${selectedPerman}?active=${toggle}`;
-              await axiosInstance.put(url);
+              await axiosInstance?.put(url);
             } else {
               alert("Perman saýlaň");
             }
@@ -261,7 +261,7 @@ const AdminPage = () => {
 
     try {
         if (perman.title_tm && perman.title_ru && perman.month && perman.year && perman.number && perman.namalar_id && perman.month_ru) {
-            const response = await axiosInstance.post(url, data);
+            const response = await axiosInstance?.post(url, data);
             setPerman({
                 title_tm: "",
                 title_ru: "",
@@ -274,7 +274,7 @@ const AdminPage = () => {
 
             const id = response?.data.id;
             await uploadPDF(id);  
-            await axiosInstance.put(`/api/update-active/${id}?active=${toggle}`);
+            await axiosInstance?.put(`/api/update-active/${id}?active=${toggle}`);
             
             setResponse(response => ({
                 ...response,
@@ -306,7 +306,7 @@ const AdminPage = () => {
       const data = dictionary;
       try {
         if (dictionary.title_tm && dictionary.title_ru && dictionary.description_tm && dictionary.description_ru) {
-          const response = await axiosInstance.post(url, data);
+          const response = await axiosInstance?.post(url, data);
           setDictionary({
             "title_tm":"",
             "title_ru":"",
@@ -341,7 +341,7 @@ const AdminPage = () => {
           const data = information;
           try {
             if (information.title_tm && information.title_ru && information.description_tm && information.description_ru) {
-              const response = await axiosInstance.post(url, data);
+              const response = await axiosInstance?.post(url, data);
               setInformation({
                 "title_tm":"",
                 "title_ru":"",
@@ -372,8 +372,8 @@ const AdminPage = () => {
         const fetchKodeks = async () => {
             const url = '/api/get-kodeks/';
             try {
-                const response = await axiosInstance.get(url);
-                setKodeksler(response.data);
+                const response = await axiosInstance?.get(url);
+                setKodeksler(response?.data);
               } catch (err : any) {
                   setError(`Error: ${err.message}`);
                 }
@@ -385,8 +385,8 @@ const AdminPage = () => {
     useEffect(() => {
         try {
             const getNamalar = async () => {
-                const {data} = await axiosInstance.get(`/api/get-namalar?id=${nama?.["kodeks_id"]}`);
-                setNamalar(data);
+                const response = await axiosInstance?.get(`/api/get-namalar?id=${nama?.["kodeks_id"]}`);
+                setNamalar(response?.data);
         
               }
               if (nama?.["kodeks_id"] && nama?.["kodeks_id"] !== 0) {
@@ -400,8 +400,8 @@ const AdminPage = () => {
           useEffect(() => {
             const getPermanlar = async () => {
                 try {
-                    const { data } = await axiosInstance.get(`/api/get-permanlar/${selectedNama}`);
-                    setPermanlar(data);
+                    const response = await axiosInstance?.get(`/api/get-permanlar/${selectedNama}`);
+                    setPermanlar(response?.data);
                 } catch (err) {
                     console.error(err);
                 }
@@ -455,7 +455,7 @@ const AdminPage = () => {
 
             if (itemId) {
               if (userConfirmed) {
-                const response = await axiosInstance.delete(`/api/delete-kodeks/${itemId}/`);
+                const response = await axiosInstance?.delete(`/api/delete-kodeks/${itemId}/`);
 
                 setResponse(prevResponse => ({
                   ...prevResponse,
@@ -485,7 +485,7 @@ const AdminPage = () => {
   
           if (itemId) {
             if (userConfirmed) {
-                const response = await axiosInstance.delete(`/api/delete-namalar/${itemId}/`);
+                const response = await axiosInstance?.delete(`/api/delete-namalar/${itemId}/`);
                 setResponse(response => ({
                     ...response,
                     "namaDelete" : true
@@ -512,7 +512,7 @@ const AdminPage = () => {
                 if (itemId) {
 
                   if (userConfirmed) {
-                    const response = await axiosInstance.delete(`/api/delete-permanlar/${itemId}/`);
+                    const response = await axiosInstance?.delete(`/api/delete-permanlar/${itemId}/`);
                     setResponse(response => ({
                       ...response,
                       "permanDelete" : true
@@ -540,7 +540,7 @@ const AdminPage = () => {
 
             if (itemId) {
               if (userConfirmed) {
-                const response = await axiosInstance.delete(`/api/delete-dictinary/${itemId}/`);
+                const response = await axiosInstance?.delete(`/api/delete-dictinary/${itemId}/`);
 
                 setResponse(prevResponse => ({
                   ...prevResponse,
@@ -572,7 +572,7 @@ const AdminPage = () => {
   
               if (itemId) {
                 if (userConfirmed) {
-                  const response = await axiosInstance.delete(`/api/delete-information/${itemId}/`);
+                  const response = await axiosInstance?.delete(`/api/delete-information/${itemId}/`);
   
                   setResponse(prevResponse => ({
                     ...prevResponse,

@@ -50,9 +50,9 @@ const Perman = ({ params }: { params: Promise<{ id: string }> }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get(`/api/perman/get_one/${id}`);
+        const response = await axiosInstance?.get(`/api/perman/get_one/${id}`);
         
-        setPerman(response.data);
+        setPerman(response?.data);
       } catch (error: any) {
         console.log(error.message);
       }

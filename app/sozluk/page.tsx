@@ -73,8 +73,8 @@ const Page = () => {
             : `${base_URL}/api/get-dictinary?search=${query}`;
 
         try {
-            const response = await axiosInstance.get(url);
-            return response.data.map((item: any) => ({
+            const response = await axiosInstance?.get(url);
+            return response?.data.map((item: any) => ({
                 label: change ? item.title_tm : item.title_ru,
                 value: item.id,
                 word: item

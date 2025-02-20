@@ -35,13 +35,11 @@ const everson_mono = localFont({
   weight: "100 900",
 });
 
-
 const built_titling = localFont({
   src: "./fonts/built_titling/built_titling_rg.otf",
   variable: "--font-built_titling",
   weight: "100 900",
 });
-
 
 const creato_display = localFont({
   src: "./fonts/creato_display/CreatoDisplay-Regular.otf",
@@ -80,7 +78,6 @@ export const metadata: Metadata = {
   description: "Kanunçylyk",
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -92,20 +89,20 @@ export default function RootLayout({
         className={`${roboto.variable} ${roboto_medium.variable} ${geistSans.variable} ${geistMono.variable} ${instruction.variable} ${mono_type.variable} ${everson_mono.variable} ${built_titling.variable} ${creato_display.variable} ${creato_display_italic.variable} font-creato_display antialiased scrollbar-hide`}
       >
         <MyProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
             <SidebarProvider>
               <AppSidebar />
               <main className="w-full">
                 {children}
               </main>
             </SidebarProvider>
-          </ThemeProvider>
-        </MyProvider>
+        </ThemeProvider>
+          </MyProvider>
       </body>
     </html>
   );

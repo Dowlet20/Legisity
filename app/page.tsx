@@ -46,7 +46,7 @@ export default function Home() {
   const [permanlar, setPermanlar] = useState<any>([]);
   const [selectedNama, setSelectedNama] = useState("0");
   const [search, setSearch] = useState('');
-  const { change } = useMyContext();
+  const { change, setChange } = useMyContext();
   const [information, setInformation] = useState<any>([]);
   const { theme } = useTheme();
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -75,7 +75,6 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       const url = `/api/get-permanlar/${selectedNama}?active=false${year !== 0 ? `&year=${year}` : ""}${month ? `&month=${month}` : ""}${search ? `&search=${search}` : ""}`;
-      console.log(url);
       try {
         const response = await axiosInstance?.get(url);
         setPermanlar(response?.data);
@@ -83,11 +82,10 @@ export default function Home() {
         console.log(error.message);
       }
     }
-    console.log(selectedNama)
     if (selectedNama !== "0") {
       fetchData();
     }
-  }, [selectedNama, search]);
+  }, [selectedNama, search,month,year]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,7 +93,6 @@ export default function Home() {
       try {
         const response = await axiosInstance?.get(url);
         setInformation(response?.data);
-        console.log(response?.data);
       } catch (error: any) {
         console.log(error.message);
       }
@@ -249,7 +246,7 @@ export default function Home() {
                     className="text-[16px]"
                     value={"0"}
                   >
-                    Hemmesi
+                    {change ? "Hemmesi" : "Все"}
                   </SelectItem>
                   {years?.map((year: any) => {
                     return (
@@ -278,7 +275,7 @@ export default function Home() {
                     className="text-[16px]"
                     value={"0"}
                   >
-                    Hemmesi
+                    {change ? "Hemmesi" : "Все"}
                   </SelectItem>
                   {months?.map((month: any) => {
                     return (

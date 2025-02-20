@@ -1,5 +1,4 @@
 "use client"
-"use strict"
 
 import {useState, useEffect} from "react";
 import {ModeToggle} from "@/components/toggleButton"
@@ -210,11 +209,13 @@ const AllCotegory = () => {
           <div className="w-1/2">
             <Select onValueChange={handleSelectKodeks}>
               <SelectTrigger className="text-[16px] flex-1">
-                <SelectValue  placeholder="Namanyň görnüşini saýlaň" />
+                <SelectValue  placeholder={change ? "Namanyň görnüşini saýlaň":"Выберите..."} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel className="text-[16px]">Namanyň görnüşi</SelectLabel>
+                  <SelectLabel className="text-[16px]">
+                    {change ? "Namanyň görnüşi" : "По-русский"}
+                  </SelectLabel>
                   {!Array.isArray(kodeksler) ? [] : kodeksler?.map((nama: any)=> {
                     return (
                     < SelectItem
@@ -237,11 +238,11 @@ const AllCotegory = () => {
               <div className="w-full">
                 <Select onValueChange={handleSelectNama}>
                   <SelectTrigger className="text-[16px] flex-1">
-                    <SelectValue  placeholder="Namany saýlaň" />
+                    <SelectValue  placeholder={change ? "Namany saýlaň" : "Выберите"} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel className="text-[16px]">Namanyň görnüşi</SelectLabel>
+                      <SelectLabel className="text-[16px]">{change ? "Namanyň görnüşi" : "По-русский"}</SelectLabel>
                       {!Array.isArray(namalar) ? [] : namalar?.map((nama: any) => {
                         return (
                         <SelectItem
@@ -321,7 +322,9 @@ const AllCotegory = () => {
                     <TableBody className="text-[16px]">
                       {permanlar.length === 0 ? (
                         <TableRow>
-                          <TableCell colSpan={6} className="text-center">Maglumat ýok</TableCell>
+                          <TableCell colSpan={6} className="text-center">
+                            {change ? "Maglumat ýok":"Нет доступных данных"}
+                          </TableCell>
                         </TableRow>
                       ) : ( !Array.isArray(permanlar) ? [] :
                         permanlar.map((perman:any) => (
@@ -330,7 +333,7 @@ const AllCotegory = () => {
                             <TableCell>{perman.id}</TableCell>
                             <TableCell>
                               <div className="text-justify">
-                                <a href={`/ylmy-tejribe/${change ? perman?.pdf?.match(/\/pdf\/(\d+)\.pdf/)?.[1]:perman?.pdf_rus?.match(/\/pdf\/(\d+)\.pdf/)?.[1]}`} className="hover:underline">
+                                <a href={`/ylmy-tejribe/${perman?.pdf?.match(/\/pdf\/(\d+)\.pdf/)?.[1]}`} className="hover:underline">
                                   {change ? perman.title_tm : perman.title_ru}
                                 </a>
                               </div>

@@ -6,13 +6,6 @@ import * as React from "react"
 import {ModeToggle} from "@/components/toggleButton";
 import { useTheme } from 'next-themes';
 
-// global.d.ts
-interface PromiseConstructor {
-  withResolvers<T>(): { promise: Promise<T>; resolve: (value?: T | PromiseLike<T>) => void; reject: (reason?: any) => void; };
-}
-
-// Ensure to include this file in your TypeScript compilation
-
 import {
   Table,
   TableBody,
@@ -24,9 +17,20 @@ import {
  
 import { SidebarTrigger } from "../../../components/ui/sidebar";
 import Image from 'next/image';
+import { pdfjs } from 'react-pdf';
+import Link from 'next/link';
+import PdfComp from '@/components/PdfComp';
 
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
 
-const Perman = ({ params }: { params: Promise<{ id: string }> }) => {
+interface PermanProps {
+  params: Promise<{ id: string }>;
+}
+
+const Perman: React.FC<PermanProps> = ({ params }) => {
   const [perman, setPerman] = useState<any>({});
   const {id} = use(params);
   const {theme} = useTheme();
@@ -35,13 +39,8 @@ const Perman = ({ params }: { params: Promise<{ id: string }> }) => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       setWindowWidth(window.innerWidth);
-
-      
       const handleResize = () => setWindowWidth(window.innerWidth);
-
       window.addEventListener("resize", handleResize);
-
-      
       return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
@@ -50,16 +49,16 @@ const Perman = ({ params }: { params: Promise<{ id: string }> }) => {
     const fetchData = async () => {
       try {
         const response = await axiosInstance?.get(`/api/perman/get_one/${id}`);
-        
         setPerman(response?.data);
       } catch (error: any) {
         console.log(error.message);
       }
     }
     fetchData();
-  }, []);
+  }, [id]);
 
   useEffect(()=>{}, [theme])
+  
   return (
     <div className='flex flex-col items-center'>
       <nav className="border-b-[1px] border-gray-300 dark:border-gray-700 flex items-center justify-between pl-2 w-full mb-6 dark:bg-gray-950 bg-opacity-60 backdrop-blur-md sticky top-0 z-30">
@@ -89,7 +88,7 @@ const Perman = ({ params }: { params: Promise<{ id: string }> }) => {
           <ModeToggle />
         </div>
       </nav>
-      <div className=" border-[1px] rounded-md w-[84%] mb-4">
+      <div className="border-[1px] rounded-md w-[84%] mb-4">
         <Table>
           <TableHeader className="text-[16px] bg-gray-100 dark:bg-gray-900">
             <TableRow>
@@ -108,13 +107,12 @@ const Perman = ({ params }: { params: Promise<{ id: string }> }) => {
               <TableCell></TableCell>
               <TableCell>{perman?.month}</TableCell>
               <TableCell>{perman?.year}</TableCell>
+              <TableCell>{perman?.day}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </div>
-      <PdfComp 
-        bookUrl={perman?.pdf} 
-      />
+      {perman?.pdf && <PdfComp bookUrl={perman.pdf} />}
     </div>
   )
 }

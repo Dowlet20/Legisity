@@ -77,6 +77,7 @@ export function AppSidebar() {
 
   const changeLanguage = (toggle: boolean) => {
     setChange(toggle);
+    sessionStorage.setItem('isActive', toggle.toString());
   };
 
   return (
@@ -172,8 +173,8 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               )}
-              {/* {!open && (windowWidth < 1300)  && (
-                <SidebarMenuItem className="flex items-center h-[60vh]">
+              {!open && (windowWidth < 1300)  && (
+                <SidebarMenuItem className="flex items-center h-[55vh]">
                     <SidebarMenuButton
                       className="m-1 h-auto"
                       asChild
@@ -188,7 +189,7 @@ export function AppSidebar() {
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-              )} */}
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

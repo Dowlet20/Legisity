@@ -213,7 +213,6 @@ const AdminPage = () => {
 
         if (response?.status === 200) {
             setSuccessMessage("File uploaded successfully!");
-            console.log("File uploaded successfully!");
             setFile(null); 
             setFile_rus(null);
           } else {

@@ -1,5 +1,6 @@
-"use client"
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+'use client';
+
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface MyContextType {
     change: boolean;
@@ -19,6 +20,15 @@ export const MyProvider: React.FC<MyProviderProps> = ({ children }) => {
     const [change, setChange] = useState<boolean>(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+          const storedValue = sessionStorage.getItem('isActive');
+          if (storedValue !== null) {
+            setChange(storedValue === 'true');
+          }
+        }
+      }, []);
+
     const login = () => setIsAuthenticated(true);
     const logout = () => setIsAuthenticated(false);
 
@@ -28,6 +38,8 @@ export const MyProvider: React.FC<MyProviderProps> = ({ children }) => {
         </MyContext.Provider>
     );
 };
+
+
 
 export const useMyContext = (): MyContextType => {
     const context = useContext(MyContext);

@@ -27,7 +27,6 @@ const Page = () => {
     };
 
 
-
     const customStyles = {
         control: (provided: any) => ({
             ...provided,
@@ -69,8 +68,8 @@ const Page = () => {
 
     const loadOptions = async (query: string) => {
         const url = !query
-            ? `${base_URL}/api/get-dictinary`
-            : `${base_URL}/api/get-dictinary?search=${query}`;
+            ? `api/get-dictinary`
+            : `api/get-dictinary?search=${query}`;
 
         try {
             const response = await axiosInstance?.get(url);
@@ -89,6 +88,8 @@ const Page = () => {
         setWord(option.word);
     };
 
+
+
     return (
         <div>
             <div className='sticky top-0 z-50'>
@@ -98,7 +99,7 @@ const Page = () => {
                         {windowWidth !== null && windowWidth < 1300 ? <SidebarTrigger /> : <div></div>}
                     </div>
                     <p className='text-[20px] my-[10px] font-roboto_medium'>
-                        Hukuk sözlügi
+                        {change ? "Hukuk sözlügi" : "Словарь"}
                     </p>
                     <p></p>
                 </div>
@@ -115,7 +116,7 @@ const Page = () => {
                                     cacheOptions
                                     loadOptions={loadOptions}
                                     onChange={handleChange}
-                                    placeholder="Gözleg... "
+                                    placeholder={change ? "Gözleg... " : "Поиск..."}
                                     styles={customStyles}
                                     onInputChange={handleInputChange}
                                     onMenuOpen={handleMenuOpen}

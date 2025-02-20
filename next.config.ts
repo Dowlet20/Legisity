@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // onError: () => {
+  // },
 };
 
 export default nextConfig;

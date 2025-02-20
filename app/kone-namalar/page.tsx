@@ -74,7 +74,7 @@ export default function Home() {
     if (selectedNama !=="0") {
       fetchData();
     }
-  }, [selectedNama, search]);
+  }, [selectedNama, search,year,month]);
 
 
 
@@ -153,7 +153,7 @@ export default function Home() {
           <ModeToggle />
         </div>
       </nav>
-      <h1 className="mt-[20px] text-[24px] font-roboto_medium">Güýjini ýitiren namalar</h1>
+      <h1 className="mt-[20px] text-[24px] font-roboto_medium">{change ? "Güýjini ýitiren namalar" : "Утратившие силу акты"}</h1>
       <main className="w-[80%]">
         <section className="flex items-center mx-3 mt-[20px] justify-between gap-5 relative">
           <input
@@ -162,10 +162,10 @@ export default function Home() {
             onChange={handleChange}
             onFocus={() => search && setShowDropdown(true)}
             className="w-full p-[5px] border text-[16px] border-gray-300 dark:border-gray-700 rounded-md focus:ring-1 focus:ring-gray-600 focus:outline-none"
-            placeholder="Gözleg..."
+            placeholder={change ? "Gözleg...": "Поиск..."}
           />
-          {showDropdown && permanlar?.length > 0 && (
-            <div className="absolute left-0 right-8  mt-[90px] bg-white border border-gray-300 rounded shadow-lg z-10">
+          {/* {showDropdown && permanlar?.length > 0 && (
+            <div className="absolute left-0 right-8 top-0  mt-[90px] bg-white border border-gray-300 rounded shadow-lg z-10">
                 {permanlar?.map((item: any, index:any) => (
                     <button
                       key={index}
@@ -178,7 +178,7 @@ export default function Home() {
                     </button>
                 ))}
             </div>
-            )}
+            )} */}
           <div className="w-full">
             <Select onValueChange={handleSelectNama}>
               <SelectTrigger className="text-[16px] flex-1">
@@ -187,7 +187,7 @@ export default function Home() {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel className="text-[16px]">
-                    Namanyň görnüşi
+                    { change ? "Namanyň görnüşi" : "По-русский"}
                   </SelectLabel>
                   {!Array.isArray(namalar) ? [] : namalar.map((nama:any) => {
                     return (
@@ -278,7 +278,7 @@ export default function Home() {
                 {permanlar.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={6} className="text-center">
-                      Bu bölümde güýjini ýitiren nama ýok.
+                      {change ? "Bu bölümde güýjini ýitiren nama ýok." : "Нет доступных данных"}
                     </TableCell>
                   </TableRow>
                 ) : (!Array.isArray(permanlar) ? [] : 

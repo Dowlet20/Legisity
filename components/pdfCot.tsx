@@ -1,5 +1,5 @@
 "use client"
-import { base_URL } from '@/utils/axiosInstance';
+
 import { useState, useEffect } from 'react';
 import { Document, Page } from 'react-pdf';
 

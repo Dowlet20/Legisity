@@ -6,6 +6,13 @@ import * as React from "react"
 import {ModeToggle} from "@/components/toggleButton";
 import { useTheme } from 'next-themes';
 
+// global.d.ts
+interface PromiseConstructor {
+  withResolvers<T>(): { promise: Promise<T>; resolve: (value?: T | PromiseLike<T>) => void; reject: (reason?: any) => void; };
+}
+
+// Ensure to include this file in your TypeScript compilation
+
 import {
   Table,
   TableBody,
@@ -18,14 +25,6 @@ import {
 import { SidebarTrigger } from "../../../components/ui/sidebar";
 import Image from 'next/image';
 
-import { pdfjs } from 'react-pdf';
-import PdfComp from '../../../components/PdfComp';
-import Link from 'next/link';
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
 
 const Perman = ({ params }: { params: Promise<{ id: string }> }) => {
   const [perman, setPerman] = useState<any>({});
@@ -61,7 +60,6 @@ const Perman = ({ params }: { params: Promise<{ id: string }> }) => {
   }, []);
 
   useEffect(()=>{}, [theme])
-  console.log(perman?.pdf)
   return (
     <div className='flex flex-col items-center'>
       <nav className="border-b-[1px] border-gray-300 dark:border-gray-700 flex items-center justify-between pl-2 w-full mb-6 dark:bg-gray-950 bg-opacity-60 backdrop-blur-md sticky top-0 z-30">

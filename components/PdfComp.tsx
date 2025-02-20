@@ -34,7 +34,8 @@ function PdfComp( {bookUrl}: any ) {
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
   }
-
+  
+  console.log(`${base_URL}${bookUrl}`)
   
   return (
     <div className='flex flex-col'>

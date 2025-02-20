@@ -1,9 +1,12 @@
 import axios, { AxiosInstance } from 'axios';
 
 const ipAddresses = [
-  'http://127.0.0.1:5000',
+  'http://127.0.0.1:5000/',
   'http://10.10.73.26:5000/'
 ];
+
+
+
 
 const createAxiosInstance = (ip: string): AxiosInstance => {
   return axios.create({
@@ -35,5 +38,6 @@ const getResponsiveAxiosInstance = async (): Promise<AxiosInstance | null> => {
 const axiosInstance = await getResponsiveAxiosInstance();
 console.log(`Using base URL: ${base_URL}`);
 
+base_URL = base_URL.replace(/\/$/, "");
 export { base_URL }; 
 export default axiosInstance;

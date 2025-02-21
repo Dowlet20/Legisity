@@ -28,7 +28,7 @@ const PdfComp: React.FC<PdfCompProps> = ({ bookUrl }) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setScale(1.22 * (windowWidth / originalWidth));
+      setScale(1.16 * (windowWidth / originalWidth));
     }
   }, [windowWidth]);
 

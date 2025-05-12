@@ -23,29 +23,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
-
-
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-
-import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes"
 
-import { SidebarTrigger } from "../components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import axiosInstance from "@/utils/axiosInstance";
 import { useMyContext } from "@/context/mycontext"
 import Link from "next/link";
@@ -53,13 +33,11 @@ import { base_URL } from "@/utils/axiosInstance";
 import PaginationComp from "@/components/PaginationComp";
 
 export default function Home() {
-  const [short, setShort] = useState(false);
   const [namalar, setNamalar] = useState<any>([]);
   const [permanlar, setPermanlar] = useState<any>([]);
   const [selectedNama, setSelectedNama] = useState("0");
   const [search, setSearch] = useState('');
   const { change, setChange } = useMyContext();
-  const [information, setInformation] = useState<any>([]);
   const { theme } = useTheme();
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [year, setYear] = useState(0);
@@ -86,6 +64,7 @@ export default function Home() {
   }, []);
 
   const router = useRouter();
+
   useEffect(() => {
     const fetchData = async () => {
       const url = `/api/get-permanlar/?skip=${skip}&limit=${limit}&active=false${selectedNama !== "0" ? `&namalar_id=${selectedNama}` : ""}${year !== 0 ? `&year=${year}` : ""}${month ? `&month=${month}` : ""}${search ? `&search=${search}` : ""}`;
@@ -101,25 +80,8 @@ export default function Home() {
   }, [selectedNama, search, month, year]);
 
 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const url = "/api/get-information";
-      try {
-        const response = await axiosInstance?.get(url);
-        setInformation(response?.data);
-      } catch (error: any) {
-        console.log(error.message);
-      }
-    }
-    fetchData();
-  }, []);
-
-
   const handleSelectNama = (value: string) => {
     setSelectedNama(value);
-    setShort(false);
-
   }
 
   const handleSelectYear = (value: string) => {
@@ -193,7 +155,6 @@ export default function Home() {
           <ModeToggle />
         </div>
       </nav>
-      <Carousel images={countries} />
       <main className="w-[95%]">
         <section className="flex items-center mx-3 mt-[50px] justify-between gap-5 relative">
           <input
@@ -243,10 +204,6 @@ export default function Home() {
               </SelectContent>
             </Select>
           </div>
-          <Button variant="outline"
-            onClick={() => { setShort(toggle => !toggle) }}>
-            {!short ? (change ? "Maglumat" : "Инфо") : (change ? "Tablissa" : "Таблица")}
-          </Button>
         </section>
         <div className="flex items-center pr-3 mt-3 justify-end w-full gap-5">
           <div className="w-[120px]">
@@ -308,7 +265,6 @@ export default function Home() {
             </Select>
           </div>
         </div>
-        {!short && (
           <section className="mt-[40px] border-[1px] m-3 rounded-md">
             <div>
               <Table>
@@ -367,31 +323,6 @@ export default function Home() {
               />
             </div>
           </section>
-        )}
-        {
-          short && (
-            <section className="mt-[40px] font-creato_display text-[18px]  m-3 rounded-md">
-              <Accordion type="multiple" >
-                {/* multiple */}
-                {Array.isArray(information) && information.map((info: any) => {
-                  return (
-                    <AccordionItem key={info?.id} value={info?.id}>
-                      <AccordionTrigger>
-                        {change ? info?.title_tm : info?.title_ru}
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <i>
-                          {change ? info?.description_tm : info?.description_ru}
-                        </i>
-                      </AccordionContent>
-                    </AccordionItem>
-                  )
-                })}
-              </Accordion>
-            </section>
-
-          )
-        }
       </main>
     </div>
   );

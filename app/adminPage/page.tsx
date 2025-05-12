@@ -87,6 +87,8 @@ const AdminPage = () => {
   const [selectedInfo, setSelectedInfo] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const skip =0;
+  const limit=10;
 
 
   useEffect(()=>{
@@ -399,7 +401,7 @@ const AdminPage = () => {
           useEffect(() => {
             const getPermanlar = async () => {
                 try {
-                    const response = await axiosInstance?.get(`/api/get-permanlar/${selectedNama}`);
+                    const response = await axiosInstance?.get(`/api/get-permanlar/?namalar_id=${selectedNama}`);
                     setPermanlar(response?.data);
                 } catch (err) {
                     console.error(err);

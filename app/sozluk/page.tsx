@@ -91,7 +91,7 @@ const Page = () => {
 
 
     return (
-        <div>
+        <div className='2xl:ml-[200px]'>
             <div className='sticky top-0 z-50'>
 
                 <div className='flex items-center justify-between'>

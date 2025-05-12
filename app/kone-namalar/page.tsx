@@ -125,7 +125,7 @@ export default function Home() {
     router.push(`/perman/${suggestion?.id}`);
   };
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center 2xl:ml-[200px]">
       <nav className="border-b-[1px] border-gray-300 dark:border-gray-700 flex items-center justify-between pl-2 w-full sticky top-0  z-30 bg-white dark:bg-gray-950 bg-opacity-30 backdrop-blur-md">
       {windowWidth < 1300 ? (<SidebarTrigger />) : (<div></div>)} 
         <Link href="/">

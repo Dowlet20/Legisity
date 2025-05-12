@@ -22,7 +22,7 @@ const Perman = ({ params }: { params: Promise<{ id: string }> }) => {
   useEffect(()=>{}, [theme])
   
   return (
-    <div className='flex flex-col items-center'>
+    <div className='flex flex-col items-center 2xl:ml-[200px]'>
       <PdfCot
         bookUrl={id} 
       />

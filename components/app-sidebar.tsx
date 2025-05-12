@@ -60,6 +60,11 @@ export function AppSidebar() {
       icon: BookA,
     },
     {
+      title: change ? "Gözleg" : "Поиск",
+      url: "/gozleg",
+      icon: Search,
+    },
+    {
       title: "Harby doktrina",
       url: "/ylmy-tejribe/17",
       icon: BookOpen,
@@ -81,7 +86,7 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="2xl:ml-[200px] 2xl:border-l">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
